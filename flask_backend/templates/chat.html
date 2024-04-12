@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background-color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        #chatbox {
+            height: 400px;
+            overflow: auto;
+            margin-bottom: 20px;
+        }
+        #userInput {
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid #9E9E9E;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            resize: none; /* Prevent resizing of textarea */
+        }
+        #send {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #send:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div id="chatbox"></div>
+        <textarea id="userInput" rows="2" placeholder="Type your message here..."></textarea>
+        <button id="send">Send</button>
+    </div>
+    <script>
+        const body = document.getElementById('chatbox');
+        const submit_btn = document.querySelector('button');
+        const input = document.getElementById('userInput');
+        const maxRows = 10;  // Set upper limit
+
+        input.addEventListener('input', function() {
+            this.rows = 1;  // Reset default value
+            // Increase rows based on scroll height, up to the Maxrows
+            this.rows = Math.min(this.scrollHeight / this.offsetHeight, maxRows);
+        });
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submit_btn.click();
+            }
+        });
+
+        submit_btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            // Disable the textarea and the submit button
+            input.disabled = true;
+            submit_btn.disabled = true;
+            submit_btn.style.backgroundColor = '#ccc';
+
+            const userText = input.value.replace(/\n/g, '<br>');
+            body.innerHTML += "<p><strong>You:</strong> " + userText + "</p>";
+            input.value = '';
+
+            try {
+                const response = await fetch("/get", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({message: userText})
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                let output = "";
+                let botMessage = document.createElement('p');
+                botMessage.innerHTML = "<strong>Bot:</strong> ";
+                body.appendChild(botMessage);
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    output += new TextDecoder().decode(value);
+                    botMessage.innerHTML = "<strong>Bot:</strong> " + output.replace(/\n/g, '<br>');
+                    botMessage.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+
+                    if (done) {
+                        break;
+                    }
+                }
+            } catch (error) {
+                console.error('There was a problem with the fetch operation: ' + error.message);
+                body.innerHTML += "<p><strong>Error:</strong> There was a problem with the request. Please try again later.</p>";
+            }
+            // Enable the textarea and the submit button
+            input.disabled = false;
+            submit_btn.disabled = false;
+            submit_btn.style.backgroundColor = '#007bff';
+        });
+    </script>       
+</body>
+</html>
