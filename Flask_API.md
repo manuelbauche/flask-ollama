@@ -51,16 +51,17 @@ The backend system will be designed to be scalable, secure, and efficient, capab
 - The API will be designed to handle various requests and responses as expected, with a focus on the correct functioning of all features.
 
 ### Code Quality
-- Code will be clean, well-organized, and follow Pythonic conventions. Adherence to PEP 8 style guide will be ensured.
+- Code will be clean, well-organized, and follow Pythonic conventions.
 
 ### Database Design
-- MySQL usage will be efficient and logical, with a well-designed schema and interactions that support the application's functionality.
+- MySQL usage will be efficient and logical, with a well-designed schema and interactions that support the application's functionality. CRUD operations will be used to interact with the database.
 
 ### AI Integration
 - AI will be effectively used to enhance the backend functionalities, with a focus on modularity and well-defined interfaces.
 
 ### Security
-- Basic security measures for API access will be implemented, including authentication and authorization mechanisms.
+- Basic security measures for API access will be implemented, including authentication and authorization mechanisms. Consider using Flask extensions like Flask-HTTPAuth or Flask-JWT.
+
 
 ### Error Handling and Logging
 - Comprehensive error handling and logging will be developed for troubleshooting and monitoring purposes.
