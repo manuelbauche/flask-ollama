@@ -16,4 +16,6 @@ However, the newest Microsoft PowerShell does allow for many Unix Shell-like com
 * Next install Flask 'pip install flask' 
 * You can check 'requirements.txt' for specific versions, many libraries are installed together with Flask
 * Set the environment variable 'export FLASK_APP=app.py' for Unix-based console and 'set FLASK_APP=app.py' for Windows
-* Run the application using 'flask run'
+* Install oLlama: https://ollama.com/
+* Install and run llama2 using 'ollama run llama2' this will take some minutes
+* Run python application using ;python app.py'
