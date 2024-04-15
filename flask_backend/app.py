@@ -5,9 +5,8 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, request, render_template
 from api.ai_process import chat
-from flask_jwt_extended import JWTManager
 from api.auth import auth
-from setup import db
+from extensions import db, jwt_manager
 from models import User
 
 load_dotenv()
@@ -15,9 +14,9 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = app.secret_key  # change this
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET')
 db.init_app(app)
-jwt_manager = JWTManager(app)
+jwt_manager.init_app(app)
 app.register_blueprint(auth, url_prefix='/api')
 
 @app.route('/')
