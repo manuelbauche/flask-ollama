@@ -1,11 +1,24 @@
 '''
 Application run file
 '''
-import logging
+import os
+from dotenv import load_dotenv
 from flask import Flask, request, render_template
 from api.ai_process import chat
+from flask_jwt_extended import JWTManager
+from api.auth import auth
+from setup import db
+from models import User
+
+load_dotenv()
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = app.secret_key  # change this
+db.init_app(app)
+jwt_manager = JWTManager(app)
+app.register_blueprint(auth, url_prefix='/api')
 
 @app.route('/')
 def index():
@@ -15,7 +28,7 @@ def index():
     return render_template('chat.html')
 
 
-@app.route('/get', methods=['GET', 'POST'])
+@app.route('/chat', methods=['GET', 'POST'])
 def reply():
     '''
     ollama response module
@@ -31,5 +44,4 @@ def reply():
     
 # Run with python app.py
 if __name__ == '__main__':
-    logging.basicConfig(filename='error.log',level=logging.DEBUG)
-    app.run()
+    app.run(debug=True)
