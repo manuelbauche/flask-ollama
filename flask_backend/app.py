@@ -3,10 +3,10 @@ Application run file
 '''
 import os
 from dotenv import load_dotenv
-from flask import Flask, request, render_template
-from api.ai_process import chat
-from api.auth import auth
+from flask import Flask, render_template
 from extensions import db, jwt_manager
+from api.auth import auth
+from api.chat import chat_bp
 from models import User
 
 load_dotenv()
@@ -18,6 +18,7 @@ app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET')
 db.init_app(app)
 jwt_manager.init_app(app)
 app.register_blueprint(auth, url_prefix='/api')
+app.register_blueprint(chat_bp, url_prefix='/api')
 
 @app.route('/')
 def index():
@@ -25,21 +26,6 @@ def index():
     :returns: Main template used for the homepage
     '''
     return render_template('chat.html')
-
-
-@app.route('/chat', methods=['GET', 'POST'])
-def reply():
-    '''
-    ollama response module
-    :returns: ollama generator of strings
-    '''
-    data = request.get_json()
-    msg = data['message']
-    def generate():
-        for val in chat(msg):
-            yield val
-    return generate(), {'Content-Type': 'application/json'}
-
     
 # Run with python app.py
 if __name__ == '__main__':
