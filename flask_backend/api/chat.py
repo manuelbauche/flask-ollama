@@ -4,7 +4,7 @@ Chat endpoint
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import User
-from ai_process import chat
+from .ai_process import chat
 
 chat_bp = Blueprint('chat', __name__)
 

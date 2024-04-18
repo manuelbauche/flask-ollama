@@ -2,7 +2,7 @@
 Functionality testing
 '''
 import pytest
-from app import app
+from .app import app
 from models import User
 from extensions import db
 
