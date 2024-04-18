@@ -11,7 +11,6 @@ def chat(msg):
     :param msg: User input in form of string
     :returns: Generator of various attributes from llama2 including the response
     '''
-    #TODO: Make this process, blocking. Avoid spamming input
     stream = ollama.chat(
             model=MODEL,
             messages=[

@@ -23,5 +23,25 @@ However, the newest Microsoft PowerShell does allow for many Unix Shell-like com
     - Check 'requirements.txt' for specific versions, many libraries are installed together with Flask
 - Set the environment variable `export FLASK_APP=app.py` for Unix-based console and `set FLASK_APP=app.py` for Windows
 - Install [ollama](https://ollama.com/)
-- Install and run llama2 using 'ollama run llama2' this will take some minutes
-- Run python application using `python app.py` or using `FLASK_APP run`
+- Install and run llama2 using `ollama run llama2` this will take some minutes
+
+# Run Application
+
+## Set Environment Variables
+
+- Create a `.env` file with the structure provided by .env-sample. 
+    - Enter your variable names 
+- Set a `JWT_Secret`, this is a (min) 32 byte-length string of characters, similar to a password. 
+    - You can use this snippet to generate a cryptographically secure secret: `python -c "import secrets; secret = secrets.token_bytes(32); print(secret.hex())"`
+
+## Run
+- Ensure ollama is running on the background. 
+- Run python application using `python app.py` or using `FLASK_APP run`.
+
+# API Endpoints
+- `/api/register`: Register a new user. Accepts a JSON object with username and password fields.
+- `/api/login`: Log in a user. Accepts a JSON object with username and password fields. Returns a JWT token.
+- `/api/chat`: Send a chat message. Accepts a JSON object with a message field. Requires a JWT token in the `Authorization` header.
+
+# Testing
+Run `pytest`
