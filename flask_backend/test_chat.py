@@ -2,8 +2,7 @@
 Functionality testing
 '''
 import pytest
-from .app import app
-from models import User
+from app import app
 from extensions import db
 
 @pytest.fixture
