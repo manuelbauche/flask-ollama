@@ -33,7 +33,7 @@ def index():
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
     messages = Message.query.filter_by(user_id=user.id).order_by(Message.timestamp).all()
-    return render_template('chat.html', messages=messages)
+    return render_template('index.html', messages=messages)
     
 # Run with python app.py
 if __name__ == '__main__':
