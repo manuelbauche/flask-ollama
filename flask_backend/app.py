@@ -24,6 +24,9 @@ jwt_manager.init_app(app)
 app.register_blueprint(auth, url_prefix='/api')
 app.register_blueprint(chat_bp, url_prefix='/api')
 
+with app.app_context():
+    db.create_all()
+
 @app.route('/')
 def index():
     '''
