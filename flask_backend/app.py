@@ -25,15 +25,22 @@ app.register_blueprint(auth, url_prefix='/api')
 app.register_blueprint(chat_bp, url_prefix='/api')
 
 @app.route('/')
-@jwt_required()
 def index():
     '''
     :returns: Main template used for the homepage
     '''
+    return render_template('index.html')
+
+@app.route('/chat')
+@jwt_required()
+def chat():
+    '''
+    :returns: Main template used for the chat interface
+    '''
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
     messages = Message.query.filter_by(user_id=user.id).order_by(Message.timestamp).all()
-    return render_template('index.html', messages=messages)
+    return render_template('chat.html', messages=messages)
     
 # Run with python app.py
 if __name__ == '__main__':
