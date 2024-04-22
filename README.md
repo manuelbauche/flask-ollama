@@ -39,8 +39,14 @@ However, the newest Microsoft PowerShell does allow for many Unix Shell-like com
 - Run python application using `python app.py` or using `FLASK_APP run`.
 
 # API Endpoints
-- `/api/register`: Register a new user. Accepts a JSON object with username and password fields.
-- `/api/login`: Log in a user. Accepts a JSON object with username and password fields. Returns a JWT token.
+- `/auth/register`: Register a new user. Accepts a JSON object with username and password fields.
+    ```json
+    {
+    'newUsername': string,
+    'newPassword': string
+    }
+    ```
+- `/auth/login`: Log in a user. Accepts a JSON object with username and password fields. Returns a JWT token.
 - `/api/chat`: Send a chat message. Accepts a JSON object with a message field. Requires a JWT token in the `Authorization` header.
 
 # Testing
