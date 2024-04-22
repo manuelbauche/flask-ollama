@@ -19,6 +19,7 @@ DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME = os.getenv('DB_USERNAME'), os.getenv
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET')
+app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
 db.init_app(app)
 jwt_manager.init_app(app)
 app.register_blueprint(auth, url_prefix='/api')

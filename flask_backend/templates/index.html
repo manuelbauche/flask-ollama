@@ -47,6 +47,7 @@
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.token);  // store the token in local storage
+                res.cookie('token', data.token);
                 window.location.href = '/chat';  // Redirect to /chat
             } else {
                 console.error('Failed to log in');
