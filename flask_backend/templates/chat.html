@@ -76,14 +76,18 @@
             }
         });
 
-        // Upon load display messages saved in the database for that user
-        const messages = JSON.parse('{{ messages|tojson|safe }}'); 
-        const chatbox = document.getElementById('chatbox');
-        messages.forEach(message => {
-            const p = document.createElement('p');
-            p.textContent = message.is_user ? `You: ${message.text}` : `Bot: ${message.text}`;
-            chatbox.appendChild(p);
-        });
+        // Upon load display messages retrieved from API endpoint
+        fetch('/api/messages')
+            .then(response => response.json())
+            .then(data => {
+            const chatbox = document.getElementById('chatbox');
+            data.forEach(message => {
+                const p = document.createElement('p');
+                p.textContent = message.is_user ? `You: ${message.text}` : `Bot: ${message.text}`;
+                chatbox.appendChild(p);
+            });
+            })
+            .catch(error => console.error(error));
 
         // Clear Messages
         document.getElementById('clear').addEventListener('click', async () => {

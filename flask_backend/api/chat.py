@@ -46,19 +46,3 @@ def reply():
         except exc.IntegrityError:
             return jsonify({'message': 'We are having issues comminicating with Ollama.'}), 400
     return generate(), {'Content-Type': 'application/json'}
-
-@chat_bp.route('/clear', methods=['POST'])
-@jwt_required()
-def clear():
-    '''
-    Clear user messages in the chat module
-    :returns: Success message
-    '''
-    current_user = get_jwt_identity()
-    user = User.query.filter_by(username=current_user).first()
-    Message.query.filter_by(user_id=user.id).delete()
-    try:
-        db.session.commit()
-    except exc.IntegrityError:
-        return jsonify({'message': 'Message could not be deleted.'}), 400
-    return jsonify({'message': 'Conversation cleared'}), 200

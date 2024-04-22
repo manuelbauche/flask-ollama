@@ -9,6 +9,7 @@ from extensions import db, jwt_manager
 from models import User, Message
 from api.auth import auth
 from api.chat import chat_bp
+from api.views import api
 
 load_dotenv()
 
@@ -19,11 +20,12 @@ DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME = os.getenv('DB_USERNAME'), os.getenv
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET')
-app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
+app.config['JWT_TOKEN_LOCATION'] = ['headers', 'cookies']
 db.init_app(app)
 jwt_manager.init_app(app)
-app.register_blueprint(auth, url_prefix='/api')
+app.register_blueprint(auth, url_prefix='/auth')
 app.register_blueprint(chat_bp, url_prefix='/api')
+app.register_blueprint(api, url_prefix='/api')
 
 with app.app_context():
     db.create_all()
@@ -35,16 +37,13 @@ def index():
     '''
     return render_template('index.html')
 
-@app.route('/chat')
+@app.route('/conversation')
 @jwt_required()
-def chat():
+def conversation():
     '''
     :returns: Main template used for the chat interface
     '''
-    current_user = get_jwt_identity()
-    user = User.query.filter_by(username=current_user).first()
-    messages = Message.query.filter_by(user_id=user.id).order_by(Message.timestamp).all()
-    return render_template('chat.html', messages=messages)
+    return render_template('chat.html')
     
 # Run with python app.py
 if __name__ == '__main__':

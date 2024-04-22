@@ -39,16 +39,16 @@
             e.preventDefault();
             const username = $('#username').val();
             const password = $('#password').val();
-            const response = await fetch('/api/login', {
+            const response = await fetch('/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
             if (response.ok) {
                 const data = await response.json();
+                //res.cookie('token', data.token);  // Store token in cookies
                 localStorage.setItem('token', data.token);  // store the token in local storage
-                res.cookie('token', data.token);
-                window.location.href = '/chat';  // Redirect to /chat
+                window.location.href = '/conversation';  // Redirect to /conversation
             } else {
                 console.error('Failed to log in');
             }
@@ -58,7 +58,7 @@
             e.preventDefault();
             const username = $('#newUsername').val();
             const password = $('#newPassword').val();
-            const response = await fetch('/api/register', {
+            const response = await fetch('/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
