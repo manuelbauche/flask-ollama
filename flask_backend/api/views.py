@@ -1,13 +1,22 @@
 '''
 Definition of all API endpoints except the AI. 
 '''
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import exc
 from models import User, Message
-from extensions import db
+from extensions import db, to_dict
 
 api = Blueprint('api', __name__)
+
+@api.route('/users', methods=['GET'])
+def get_all_users():
+    '''
+    Returns all users in the database
+    '''
+    users = User.query.all()
+
+    return jsonify([to_dict(user) for user in users]), 200
 
 @api.route('/messages', methods=['GET'])
 @jwt_required()
@@ -19,7 +28,7 @@ def get_messages():
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
     messages = Message.query.filter_by(user_id=user.id).order_by(Message.timestamp).all()
-    return jsonify([message.to_dict() for message in messages]), 200
+    return jsonify([to_dict(message) for message in messages]), 200
 
 
 @api.route('/clear', methods=['POST'])

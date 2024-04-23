@@ -6,7 +6,7 @@ import ollama
 
 MODEL = 'llama2'
 
-def chat(msg):
+def get_response(msg):
     '''
     :param msg: User input in form of string
     :returns: Generator of various attributes from llama2 including the response

@@ -53,12 +53,17 @@ However, the newest Microsoft PowerShell does allow for many Unix Shell-like com
     'password': string
     }
     ```
-- `/api/chat [GET, POST]`: Send a chat message. Accepts a JSON object with a message field. Requires a JWT token in the `Authorization` header.
+## Protected endpoints (JWT Required)
+Requires a JWT token in the `Authorization` header.
+
+- `/api/chat [GET, POST]`: Send a chat message. Accepts a JSON object with a message field.
     ```yaml
     {
     'message': string,
     }
     ```
+- `/api/messages [GET]` Returns all messages of a user. 
+- `/api/clear [POST]` Clears all messages associated to authenticated user in chat module.
 
 # Testing
 Run `pytest`

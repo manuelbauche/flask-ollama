@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import exc
 from models import User, Message
 from extensions import db
-from .ai_process import chat
+from api.ai_process import get_response
 
 chat_bp = Blueprint('chat', __name__)
 
@@ -36,7 +36,7 @@ def reply():
     # Request bot message and commit to db
     def generate():
         response_parts = []
-        for val in chat(msg):
+        for val in get_response(msg):
             response_parts.append(val)
             yield val
         bot_message = Message(user_id=user.id, text=''.join(response_parts), is_user=False)

@@ -4,9 +4,7 @@ Application run file
 import os
 from dotenv import load_dotenv
 from flask import Flask, render_template
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from extensions import db, jwt_manager
-from models import User, Message
 from api.auth import auth
 from api.chat import chat_bp
 from api.views import api
@@ -20,7 +18,7 @@ DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME = os.getenv('DB_USERNAME'), os.getenv
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET')
-app.config['JWT_TOKEN_LOCATION'] = ['headers', 'cookies']
+app.config['JWT_TOKEN_LOCATION'] = ['headers']
 db.init_app(app)
 jwt_manager.init_app(app)
 app.register_blueprint(auth, url_prefix='/auth')
@@ -38,7 +36,6 @@ def index():
     return render_template('index.html')
 
 @app.route('/conversation')
-@jwt_required()
 def conversation():
     '''
     :returns: Main template used for the chat interface

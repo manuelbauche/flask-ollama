@@ -46,7 +46,6 @@
             });
             if (response.ok) {
                 const data = await response.json();
-                //res.cookie('token', data.token);  // Store token in cookies
                 localStorage.setItem('token', data.token);  // store the token in local storage
                 window.location.href = '/conversation';  // Redirect to /conversation
             } else {
