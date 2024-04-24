@@ -65,5 +65,8 @@ Requires a JWT token in the `Authorization` header.
 - `/api/messages [GET]` Returns all messages of a user. 
 - `/api/clear [POST]` Clears all messages associated to authenticated user in chat module.
 
+### Testing endpoints only
+- `/api/users [GET]` Returns a dictionary of all users and their information. 
+
 # Testing
 Run `pytest`

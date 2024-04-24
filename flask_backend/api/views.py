@@ -15,8 +15,15 @@ def get_all_users():
     Returns all users in the database
     '''
     users = User.query.all()
-
     return jsonify([to_dict(user) for user in users]), 200
+
+@api.route('/allmessages', methods=['GET'])
+def get_all_messages():
+    '''
+    Returns all users in the database
+    '''
+    messages = Message.query.all()
+    return jsonify([to_dict(message) for message in messages]), 200
 
 @api.route('/messages', methods=['GET'])
 @jwt_required()
@@ -25,9 +32,11 @@ def get_messages():
     Gets all messages for an authenticated user
     :returns: All messages
     '''
-    current_user = get_jwt_identity()
-    user = User.query.filter_by(username=current_user).first()
+    current_user_id = get_jwt_identity()
+    user = User.query.filter_by(id=current_user_id).first()
     messages = Message.query.filter_by(user_id=user.id).order_by(Message.timestamp).all()
+    if not messages:
+        return jsonify({'message': f'No messages found for {user.username}'}), 200
     return jsonify([to_dict(message) for message in messages]), 200
 
 
@@ -38,8 +47,8 @@ def clear():
     Clear user messages in the chat module
     :returns: Success message
     '''
-    current_user = get_jwt_identity()
-    user = User.query.filter_by(username=current_user).first()
+    current_user_id = get_jwt_identity()
+    user = User.query.filter_by(id=current_user_id).first()
     Message.query.filter_by(user_id=user.id).delete()
     try:
         db.session.commit()

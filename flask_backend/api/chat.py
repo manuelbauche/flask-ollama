@@ -18,8 +18,8 @@ def reply():
     :returns: ollama generator of strings
     '''
     # Perform user identity
-    current_user = get_jwt_identity()
-    user = User.query.filter_by(username=current_user).first()
+    current_user_id = get_jwt_identity() # Get the current user ID
+    user = User.query.filter_by(id=current_user_id).first()
     if not user:
         return jsonify({'message': 'User not found'}), 404
 
