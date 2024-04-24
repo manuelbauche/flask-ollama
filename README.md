@@ -67,6 +67,7 @@ Requires a JWT token in the `Authorization` header.
 
 ### Testing endpoints only
 - `/api/users [GET]` Returns a dictionary of all users and their information. 
+- `/api/allmessages [GET]` Returns a dictionary of all messages and their information. 
 
 # Testing
 Run `pytest`
