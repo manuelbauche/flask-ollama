@@ -93,7 +93,6 @@ Ideally this endpoints would be reserved for an admin panel _to be implemented_
 - `/api/allmessages [GET]` Returns a dictionary of all messages and their information. 
 
 # Testing
-Run `pytest`
 
 ## Frontend testing
 There is a simplistic UI to test the user-oriented endpoints. 
@@ -107,6 +106,25 @@ There is a simplistic UI to test the user-oriented endpoints.
 - If previous conversations exist, these will be display upon load of the module. 
 
 ## Postman testing
+Download [Postman](https://www.postman.com/downloads/) 
+
+- Open postman
+- Register a username using `POST http://localhost:5000/auth/register`
+- Login using your username and password `POST http://localhost:5000/auth/login`
+    - The response will be a token. 
+    - Copy the token, go into `Authorization` panel
+        - Select authorization type as `Bearer Token` and paste your token into the Token field
+        ![Authorization-token-example](https://i.stack.imgur.com/Ki615.png) 
+
+- With a working token you can use all protected endpoints
+    - Your token expires after a while and you will need to login again. 
+
+- It is recommended to test /api/chat using the frontend UI environment to get the correct response streaming.
+    - In postman you won't get an update until the AI is done replying, depending on the reply this can take a bit. 
+- Look at endpoint documentation above for the proper JSON format. 
+
+### Database schema
+[Database Schema](https://dbdiagram.io/d/Flask-API-6614691e03593b6b6181e9cc) 
 
 # Improvements and Future Considerations
 - Make more use of decorators to simply endpoint complexity and logic
