@@ -26,6 +26,11 @@ def reply():
 
     # Request user message and commit to db
     data = request.get_json()
+    if not data:
+        return jsonify({'message': 'No user data inputed'}), 400
+    if 'message' not in data:
+        return jsonify({'message': 'Invalid input data'}), 400
+
     msg = data['message']
     user_message = Message(user_id=user.id, text=msg, is_user=True)
     db.session.add(user_message)

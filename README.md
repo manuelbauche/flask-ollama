@@ -54,15 +54,15 @@ However, the newest Microsoft PowerShell does allow for many Unix Shell-like com
 - `/auth/register [POST]`: Register a new user. Accepts a JSON object with username and password fields.
     ```yaml
     {
-    'newUsername': string,
-    'newPassword': string
+    "username": string,
+    "password": string
     }
     ```
 - `/auth/login [POST]`: Log in a user. Accepts a JSON object with username and password fields. Returns a JWT token.
     ```yaml
     {
-    'username': string,
-    'password': string
+    "username": string,
+    "password": string
     }
     ```
 ## Protected endpoints (JWT Required)
@@ -71,11 +71,20 @@ Requires a JWT token in the `Authorization` header.
 - `/api/chat [GET, POST]`: Send a chat message. Accepts a JSON object with a message field.
     ```yaml
     {
-    'message': string,
+    "message": string
     }
     ```
 - `/api/messages [GET]` Returns all messages of a user. 
 - `/api/clear [DELETE]` Clears all messages associated to authenticated user in chat module.
+- `/api/user [GET]` Gets the information of the currently authenticated user
+- `/api/user [DELETE]` Deletes the currently authenticated user and all their associated messages.
+- `/auth/password [PATCH]`: Changes the user's password. Accepts a JSON object with current_password and new_password fields.
+    ```yaml
+    {
+    "current_password": string,
+    "new_password": string
+    }
+    ```
 
 ### Testing endpoints only
 Ideally this endpoints would be reserved for an admin panel _to be implemented_
