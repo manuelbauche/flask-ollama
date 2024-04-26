@@ -98,7 +98,7 @@
 
         // Clear Messages
         document.getElementById('clear').addEventListener('click', async () => {
-            const response = await fetch('/api/clear', { method: 'POST', headers: headers });
+            const response = await fetch('/api/clear', { method: 'DELETE', headers: headers });
             if (response.ok) {
                 chatbox.innerHTML = '';  // clear the chatbox
             } else {

@@ -29,10 +29,22 @@ However, the newest Microsoft PowerShell does allow for many Unix Shell-like com
 
 ## Set Environment Variables
 
-- Create a `.env` file with the structure provided by .env-sample. 
+- Rename the `.env.sample` file into `.env`
     - Enter your variable names 
 - Set a `JWT_Secret`, this is a (min) 32 byte-length string of characters, similar to a password. 
-    - You can use this snippet to generate a cryptographically secure secret: `python -c "import secrets; secret = secrets.token_bytes(32); print(secret.hex())"`
+    - You can use this snippet to generate a cryptographically secure secret: 
+    ```python
+    python -c "import secrets; secret = secrets.token_bytes(32); print(secret.hex())"
+    ```
+
+## Configure Application
+- Open `factory.py` and review app configuration
+### OPTIONAL configure database server
+`factory.py` is configured to create a local sqlite database which will be created in the folder `instance` within the application. 
+- If desired to setup a cloud-based database server:
+    - Uncomment `#app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}'`
+    - Comment `app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'`
+    - Review .env file configuration to ensure the environment variables for your server are correct
 
 ## Run
 - Ensure ollama is running on the background. 
@@ -63,11 +75,33 @@ Requires a JWT token in the `Authorization` header.
     }
     ```
 - `/api/messages [GET]` Returns all messages of a user. 
-- `/api/clear [POST]` Clears all messages associated to authenticated user in chat module.
+- `/api/clear [DELETE]` Clears all messages associated to authenticated user in chat module.
 
 ### Testing endpoints only
+Ideally this endpoints would be reserved for an admin panel _to be implemented_
+
 - `/api/users [GET]` Returns a dictionary of all users and their information. 
 - `/api/allmessages [GET]` Returns a dictionary of all messages and their information. 
 
 # Testing
 Run `pytest`
+
+## Frontend testing
+There is a simplistic UI to test the user-oriented endpoints. 
+- Go to `http://localhost:5000/` 
+- Register your username if you haven't already
+- Log in using your valid username and password
+- If valid credentials, you will be redirected. You need a token to access the other endpoints. 
+- Make sure ollama is running, see point above in **Modules and Frameworks Installs**
+    - Run ollama using `ollama run llama2`
+- Interact with the conversation module, the responses will be streamed in realtime and may take a couple seconds to complete
+- If previous conversations exist, these will be display upon load of the module. 
+
+## Postman testing
+
+# Improvements and Future Considerations
+- Make more use of decorators to simply endpoint complexity and logic
+- Implement retriavable message history, keep deleted conversations up to 30 days. 
+- Use sentiment analysis to tailor Ollama responses
+- Context management 
+- Personalized experience using user data

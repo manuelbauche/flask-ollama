@@ -16,10 +16,11 @@ def reply():
     '''
     ollama response module
     :returns: ollama generator of strings
+    :raises IntegrityError: If there are any issues commiting the changes with the user message or bot reply
     '''
     # Perform user identity
     current_user_id = get_jwt_identity() # Get the current user ID
-    user = User.query.filter_by(id=current_user_id).first()
+    user = User.query.get(current_user_id)
     if not user:
         return jsonify({'message': 'User not found'}), 404
 
@@ -43,7 +44,7 @@ def reply():
         db.session.add(bot_message)
         try:
             db.session.commit()
-        except exc.IntegrityError:
-            return jsonify({'message': 'We are having issues comminicating with Ollama.'}), 400
+        except Exception as e:
+            return jsonify({'message': f'Error occurred while getting a reply: {str(e)}'}), 500
 
     return Response(stream_with_context(generate()), content_type='application/json')

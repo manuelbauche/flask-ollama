@@ -62,12 +62,11 @@ The backend system will be designed to be scalable, secure, and efficient, capab
 ### Security
 - Basic security measures for API access will be implemented, including authentication and authorization mechanisms. Consider using Flask extensions like Flask-HTTPAuth or Flask-JWT.
 
-
 ### Error Handling and Logging
 - Comprehensive error handling and logging will be developed for troubleshooting and monitoring purposes.
 
 ### Testing
-- Thorough testing will be conducted to demonstrate the reliability and robustness of the application, covering various scenarios and edge cases.
+- Thorough testing will be conducted to demonstrate the reliability and robustness of the application, covering various scenarios and edge cases. Both with unit and integration tests.
 
 ### Documentation
 - Clear and detailed documentation will be provided for setting up the project and interacting with the API, including API endpoint documentation and a README file.
