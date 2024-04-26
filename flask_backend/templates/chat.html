@@ -89,7 +89,7 @@
                     const chatbox = document.getElementById('chatbox');
                     data.forEach(message => {
                         const p = document.createElement('p');
-                        p.textContent = message.is_user ? `You: ${message.text}` : `Bot: ${message.text}`;
+                        p.innerHTML = message.is_user ? `You: ${message.text.replace(/\n/g, '<br>')}` : `Bot: ${message.text.replace(/\n/g, '<br>')}`;
                         chatbox.appendChild(p);
                     });
                 }

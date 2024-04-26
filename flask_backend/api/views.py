@@ -12,6 +12,7 @@ api = Blueprint('api', __name__)
 @api.route('/users', methods=['GET'])
 def get_all_users():
     '''
+    TEST FUNCTION ONLY
     Returns all users in the database
     '''
     users = User.query.all()
@@ -20,6 +21,7 @@ def get_all_users():
 @api.route('/allmessages', methods=['GET'])
 def get_all_messages():
     '''
+    TEST FUNCTION ONLY
     Returns all users in the database
     '''
     messages = Message.query.all()
